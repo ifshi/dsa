@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node --test"
+    "test": "vitest run"
   },
   "dependencies": {
     "astro": "^5.16.15",
@@ -15,5 +15,8 @@
     "katex": "^0.16.25",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^5.1.1"
   }
 }

@@ -1,0 +1,13 @@
+---
+interface Props {
+  label: string;
+  value: string;
+}
+
+const { label, value } = Astro.props;
+---
+
+<div class="complexity-card">
+  <p class="complexity-label">{label}</p>
+  <p class="complexity-value">{value}</p>
+</div>

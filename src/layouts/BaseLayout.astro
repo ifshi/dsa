@@ -1,0 +1,44 @@
+---
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+import Header from '../components/site/Header.astro';
+import Sidebar from '../components/site/Sidebar.astro';
+import Footer from '../components/site/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activeModule?: string;
+}
+
+const {
+  title = '数据结构与算法',
+  description = '面向高校《数据结构与算法》课程的动态推演与交互教学平台',
+  activeModule,
+} = Astro.props;
+
+import { BASE_URL as base } from '../utils/site.js';
+const fullTitle = title === '数据结构与算法' ? `${title} · 动态推演平台` : `${title} · 数据结构与算法`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+  </head>
+  <body>
+    <Header />
+    <div class="layout">
+      <Sidebar activeModule={activeModule} />
+      <main class="main">
+        <slot />
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

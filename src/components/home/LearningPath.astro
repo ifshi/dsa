@@ -1,0 +1,27 @@
+---
+const steps = [
+  { title: '线性结构', desc: '顺序表、单链表、栈与队列，理解存储结构与基本运算。' },
+  { title: '树形结构', desc: '二叉树的遍历与递归本质，为后续算法铺路。' },
+  { title: '查找算法', desc: '顺序查找、折半查找与二叉排序树查找。' },
+  { title: '排序算法', desc: '冒泡、选择、插入、快速、归并与堆排序。' },
+  { title: '图结构', desc: 'BFS/DFS、最小生成树与最短路径。' },
+  { title: '算法设计思想', desc: '递归、分治、贪心与回溯，串联前面所有结构。' },
+];
+---
+
+<section class="section" id="path">
+  <h2 class="section-title">学习导航</h2>
+  <p class="section-note">建议按此顺序学习：先掌握结构，再进入查找与排序，最后落到设计思想。</p>
+  <ol class="path-list">
+    {
+      steps.map((step) => (
+        <li class="path-step">
+          <div class="path-step-body">
+            <p class="path-step-title">{step.title}</p>
+            <p class="path-step-desc">{step.desc}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

@@ -1,0 +1,33 @@
+---
+import { modules } from '../../data/modules.js';
+
+interface Props {
+  activeModule?: string;
+}
+
+const { activeModule } = Astro.props;
+import { BASE_URL as base } from '../../utils/site.js';
+const currentPath = Astro.url.pathname;
+---
+
+<aside class="sidebar" id="site-sidebar">
+  <nav class="side-nav" aria-label="教学模块">
+    <h2 class="side-title">六大模块</h2>
+    <a class="side-link" href={`${base}/`}>首页</a>
+    {
+      modules.map((mod) => {
+        const active =
+          activeModule === mod.id || currentPath.startsWith(`${base}/modules/${mod.id}/`);
+        return (
+          <a
+            class:list={['side-link', { 'is-active': active }]}
+            href={`${base}/modules/${mod.id}/`}
+          >
+            <span class="side-dot" style={`background: ${mod.accent}`} aria-hidden="true"></span>
+            {mod.title}
+          </a>
+        );
+      })
+    }
+  </nav>
+</aside>

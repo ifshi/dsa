@@ -1,0 +1,30 @@
+---
+import SearchBox from './SearchBox.astro';
+import { BASE_URL as base } from '../../utils/site.js';
+---
+
+<header class="site-header">
+  <a class="brand" href={`${base}/`}>
+    <span class="brand-mark" aria-hidden="true">⌗</span>
+    <span class="brand-text">数据结构与算法</span>
+    <span class="brand-sub">动态推演平台</span>
+  </a>
+
+  <nav class="top-nav" aria-label="主导航">
+    <a class="nav-link" href={`${base}/`}>首页</a>
+  </nav>
+
+  <div class="header-spacer"></div>
+
+  <SearchBox />
+
+  <button class="menu-toggle" type="button" data-menu-toggle aria-label="展开导航">菜单</button>
+</header>
+
+<script>
+  const toggle = document.querySelector('[data-menu-toggle]');
+  const sidebar = document.getElementById('site-sidebar');
+  toggle?.addEventListener('click', () => {
+    sidebar?.classList.toggle('is-open');
+  });
+</script>

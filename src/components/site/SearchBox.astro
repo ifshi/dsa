@@ -1,0 +1,87 @@
+---
+import { BASE_URL as base } from '../../utils/site.js';
+---
+
+<div class="search-box" data-search-box data-base={base}>
+  <input
+    class="search-input"
+    type="search"
+    placeholder="搜索算法、模块、标签…"
+    autocomplete="off"
+    aria-label="全站搜索"
+  />
+  <ul class="search-results" hidden></ul>
+</div>
+
+<script>
+  for (const box of document.querySelectorAll('[data-search-box]')) {
+    if (box.dataset.bound) continue;
+    box.dataset.bound = '1';
+
+    const base = box.dataset.base;
+    const input = box.querySelector('.search-input');
+    const list = box.querySelector('.search-results');
+    let indexPromise = null;
+
+    function loadIndex() {
+      if (!indexPromise) {
+        indexPromise = fetch(`${base}/search-index.json`).then((res) => res.json());
+      }
+      return indexPromise;
+    }
+
+    function render(hits) {
+      list.innerHTML = '';
+      if (!hits.length) {
+        list.hidden = true;
+        return;
+      }
+      for (const hit of hits) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = hit.url;
+        a.innerHTML = `<strong>${hit.title}</strong><span>${hit.type}</span>`;
+        li.appendChild(a);
+        list.appendChild(li);
+      }
+      list.hidden = false;
+    }
+
+    function search(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) {
+        list.hidden = true;
+        return;
+      }
+      loadIndex().then((data) => {
+        const hits = [];
+        for (const mod of data.modules || []) {
+          if (`${mod.title} ${mod.summary}`.toLowerCase().includes(q)) {
+            hits.push({ title: mod.title, type: '模块', url: `${base}/modules/${mod.id}/` });
+          }
+        }
+        for (const algo of data.algorithms || []) {
+          const hay = [algo.title, algo.summary, ...(algo.tags || [])].join(' ').toLowerCase();
+          if (hay.includes(q)) {
+            hits.push({ title: algo.title, type: '算法', url: `${base}/algorithms/${algo.slug}/` });
+          }
+        }
+        render(hits.slice(0, 8));
+      });
+    }
+
+    input.addEventListener('input', () => search(input.value));
+    input.addEventListener('focus', () => {
+      if (input.value) search(input.value);
+    });
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        list.hidden = true;
+        input.blur();
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (!box.contains(event.target)) list.hidden = true;
+    });
+  }
+</script>

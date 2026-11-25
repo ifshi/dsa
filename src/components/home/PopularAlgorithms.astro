@@ -1,0 +1,28 @@
+---
+import { getPopularAlgorithms } from '../../content-utils/algorithms.js';
+import { moduleById } from '../../data/modules.js';
+
+import { BASE_URL as base } from '../../utils/site.js';
+const popular = await getPopularAlgorithms();
+---
+
+<section class="section" id="popular">
+  <h2 class="section-title">热门算法</h2>
+  {
+    popular.length === 0 ? (
+      <p class="section-note">算法实验正在陆续上线，敬请期待。</p>
+    ) : (
+      <div class="algo-grid">
+        {
+          popular.map((entry) => (
+            <a class="algo-card" href={`${base}/algorithms/${entry.id}/`}>
+              <h3 class="algo-card-title">{entry.data.title}</h3>
+              <p class="algo-card-summary">{entry.data.summary}</p>
+              <span class="algo-card-module">{moduleById(entry.data.module)?.title ?? entry.data.module}</span>
+            </a>
+          ))
+        }
+      </div>
+    )
+  }
+</section>

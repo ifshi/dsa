@@ -16,12 +16,13 @@ const algorithms = defineCollection({
   }),
 });
 
-const guides = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/guides' }),
+const modules = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/modules' }),
   schema: z.object({
     title: z.string(),
+    order: z.number(),
     summary: z.string(),
   }),
 });
 
-export const collections = { algorithms, guides };
+export const collections = { algorithms, modules };

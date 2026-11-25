@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { modules, moduleById } from '../../data/modules.js';
+import { getAlgorithmsByModule } from '../../content-utils/algorithms.js';
+import { getEntry, render } from 'astro:content';
+
+export function getStaticPaths() {
+  return modules.map((mod) => ({ params: { module: mod.id } }));
+}
+
+const { module } = Astro.params;
+const mod = moduleById(module ?? '') ?? modules[0];
+import { BASE_URL as base } from '../../utils/site.js';
+
+const guide = await getEntry('modules', module ?? '');
+let GuideContent;
+if (guide) {
+  GuideContent = (await render(guide)).Content;
+}
+
+const algorithms = await getAlgorithmsByModule(mod.id);
+---
+
+<BaseLayout title={mod.title} description={mod.summary} activeModule={mod.id}>
+  <div class="module-head">
+    <h1>{mod.title}</h1>
+    <p class="chapter">{mod.chapter}</p>
+    <p class="summary">{mod.summary}</p>
+  </div>
+
+  {GuideContent && (
+    <div class="prose">
+      <GuideContent />
+    </div>
+  )}
+
+  <section class="section">
+    <h2 class="section-title">本模块算法</h2>
+    {
+      algorithms.length === 0 ? (
+        <p class="section-note">该模块的算法实验正在制作中，敬请期待。</p>
+      ) : (
+        <div class="algo-grid">
+          {
+            algorithms.map((entry) => (
+              <a class="algo-card" href={`${base}/algorithms/${entry.id}/`}>
+                <h3 class="algo-card-title">{entry.data.title}</h3>
+                <p class="algo-card-summary">{entry.data.summary}</p>
+                <div class="tag-row">
+                  {entry.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

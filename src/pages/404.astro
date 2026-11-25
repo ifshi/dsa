@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BASE_URL as base } from '../utils/site.js';
+---
+
+<BaseLayout title="页面未找到">
+  <div class="notfound">
+    <p class="code">404</p>
+    <h1>页面未找到</h1>
+    <p>你访问的页面不存在，或者已经被移动。</p>
+    <p>
+      <a class="btn btn-primary" href={`${base}/`}>返回首页</a>
+    </p>
+  </div>
+</BaseLayout>

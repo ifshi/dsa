@@ -1,0 +1,24 @@
+---
+import { modules } from '../../data/modules.js';
+import { BASE_URL as base } from '../../utils/site.js';
+---
+
+<section class="section">
+  <h2 class="section-title">六大教学模块</h2>
+  <p class="section-note">从线性结构到算法设计思想，逐步建立数据结构的完整图景。</p>
+  <div class="module-grid">
+    {
+      modules.map((mod) => (
+        <a
+          class="module-card"
+          href={`${base}/modules/${mod.id}/`}
+          style={`--card-accent: ${mod.accent}`}
+        >
+          <span class="module-card-chapter">{mod.chapter}</span>
+          <h3 class="module-card-title">{mod.title}</h3>
+          <p class="module-card-summary">{mod.summary}</p>
+        </a>
+      ))
+    }
+  </div>
+</section>

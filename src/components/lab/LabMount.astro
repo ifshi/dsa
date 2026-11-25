@@ -1,0 +1,18 @@
+---
+interface Props {
+  algorithmId: string;
+}
+
+const { algorithmId } = Astro.props;
+---
+
+<div class="lab" data-algorithm={algorithmId}></div>
+
+<script>
+  import { mountLab } from '../../lab/mountLab.js';
+
+  document.querySelectorAll('.lab[data-algorithm]:not([data-mounted])').forEach((root) => {
+    root.setAttribute('data-mounted', '1');
+    mountLab(root);
+  });
+</script>

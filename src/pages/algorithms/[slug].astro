@@ -1,0 +1,19 @@
+---
+import LabLayout from '../../layouts/LabLayout.astro';
+import LabMount from '../../components/lab/LabMount.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('algorithms');
+  return entries.map((entry) => ({ params: { slug: entry.id } }));
+}
+
+const { slug } = Astro.params;
+const entry = await getEntry('algorithms', slug ?? '');
+const { Content } = await render(entry);
+---
+
+<LabLayout entry={entry}>
+  <Content />
+  <LabMount slot="lab" algorithmId={entry.data.algorithm} />
+</LabLayout>
